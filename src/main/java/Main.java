@@ -1,10 +1,10 @@
+import hbc.Fire;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class Main {
 
-    public static void main(String[] args) throws TwitterException {
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws TwitterException, InterruptedException, JSONException {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey("6ZKmg5xXhRH2IMIpNU1bR93pb")
@@ -13,13 +13,19 @@ public class Main {
                 .setOAuthAccessTokenSecret("QKCnfRHGyj52Jzuvx6oYcMq0J41jitPWk1pVNZAZ1pd3f");
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-//        String latestStatus = "This is my Hello World!";
+        //post new twitter
+//        String latestStatus = "Posted from JAVA";
 //        Status status = twitter.updateStatus(latestStatus);
 //        System.out.println("Successfully updated the status to [" + status.getText() + "].");
-        Query query = new Query("12").count(2).lang("en");
-        QueryResult result = twitter.search(query);
-        for (Status status : result.getTweets()) {
-            System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
-        }
+
+        //query
+//        Query query = new Query("����").lang("zh-cn").count(100);
+//        QueryResult result = twitter.search(query);
+//        for (Status status : result.getTweets()) {
+//            System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
+//        }
+
+        //live listening
+        Fire.steam();
     }
 }
