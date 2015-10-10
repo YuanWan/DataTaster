@@ -1,6 +1,7 @@
 import hbc.Fire;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
+import nlp.NLP;
 
 public class Main {
 
@@ -27,5 +28,6 @@ public class Main {
 
         //live listening
         Fire.steam();
+
     }
 }

@@ -15,9 +15,13 @@ import com.twitter.hbc.core.event.Event;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
+import nlp.NLP;
 import org.json.*;
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
+
+import org.python.core.PyInstance;
+import org.python.util.PythonInterpreter;
 
 /**
  * Created by Yuan on 2015/6/13.
@@ -34,7 +38,7 @@ public class Fire {
 // Optional: set up some followings and track terms
         List<String> languages = Lists.newArrayList("en");
         List<Long> followings = Lists.newArrayList(1234L, 566788L);
-        List<String> terms = Lists.newArrayList("twitter", "api");
+        List<String> terms = Lists.newArrayList("VolksWagen");
         //List<Location> locations = Lists.newArrayList(-122.75,36.8,-121.75,37.8,-74,40,-73,41);
 
         hosebirdEndpoint.languages(languages);
@@ -55,13 +59,16 @@ public class Fire {
         Client hosebirdClient = builder.build();
 // Attempts to establish a connection.
         hosebirdClient.connect();
+        NLP.init();
 
         while (!hosebirdClient.isDone()) {
             String msg = msgQueue.take();
             boolean indexStart = msg.contains("\"text\":\"");
             boolean indexEnd = msg.contains("\"source\":\"");
             if (indexStart && indexEnd){
+
                 System.out.println(msg.substring(msg.indexOf("\"text\":\"")+8,msg.indexOf("\"source\":\"")-2));
+                System.out.println("Sentiment : " + NLP.findSentiment(msg.substring(msg.indexOf("\"text\":\"")+8,msg.indexOf("\"source\":\"")-2)));
             }
 
             //profit();
