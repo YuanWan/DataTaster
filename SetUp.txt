@@ -1,0 +1,7 @@
+install python 3.4
+# depricated install super pack for numpy scipy
+install wheel
+install amd64 version scipy numpy sklearn
+add sys var   C:\Python34;C:\Python34\Lib\site-packages\;C:\Python34\Scripts;
+pip install nltk
+nltk.download all

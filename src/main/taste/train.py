@@ -101,8 +101,8 @@ training_set = featuresets[:10000]
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 print("Original Naive Bayes Algo accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
 classifier.show_most_informative_features(15)
-
-###############
+#
+# ###############
 save_classifier = open("pickled_algos/originalnaivebayes5k.pickle","wb")
 pickle.dump(classifier, save_classifier)
 save_classifier.close()
@@ -155,10 +155,14 @@ pickle.dump(SGDC_classifier, save_classifier)
 save_classifier.close()
 
 
+# voted_classifier = VoteClassifier(
+#     classifier,
+#     LinearSVC_classifier,
+#     MNB_classifier,
+#     BernoulliNB_classifier,
+#     LogisticRegression_classifier)
 voted_classifier = VoteClassifier(
-    classifier,
     LinearSVC_classifier,
-    MNB_classifier,
     BernoulliNB_classifier,
     LogisticRegression_classifier)
 
