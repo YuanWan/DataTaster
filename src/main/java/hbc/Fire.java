@@ -1,6 +1,8 @@
 package hbc;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,8 +19,18 @@ import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
 import nlp.NLP;
 import org.json.*;
+import sentiment.Analysis;
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import static java.util.Arrays.asList;
 
 import org.python.core.PyInstance;
 import org.python.util.PythonInterpreter;
@@ -27,6 +39,9 @@ import org.python.util.PythonInterpreter;
  * Created by Yuan on 2015/6/13.
  */
 public class Fire {
+
+    static List<String> terms = Lists.newArrayList("stock");
+
     public static void steam() throws InterruptedException, JSONException {
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
         BlockingQueue<String> msgQueue = new LinkedBlockingQueue<String>(100000);
@@ -38,13 +53,13 @@ public class Fire {
 // Optional: set up some followings and track terms
         List<String> languages = Lists.newArrayList("en");
         List<Long> followings = Lists.newArrayList(1234L, 566788L);
-        List<String> terms = Lists.newArrayList("VolksWagen");
+
         //List<Location> locations = Lists.newArrayList(-122.75,36.8,-121.75,37.8,-74,40,-73,41);
 
         hosebirdEndpoint.languages(languages);
-  //      hosebirdEndpoint.followings(followings);
+        hosebirdEndpoint.followings(followings);
         hosebirdEndpoint.trackTerms(terms);
-      //  hosebirdEndpoint.locations(locations);
+ //       hosebirdEndpoint.locations(locations);
 // These secrets should be read from a config file
         Authentication hosebirdAuth = new OAuth1("6ZKmg5xXhRH2IMIpNU1bR93pb", "ybvUGYtuSbj1XpoyHSk5bCfmvMdm35kMZduqt2njPryy1lzba1", "3220384082-dH3wzKE8j1w7HZUqIIToa7fniU8g5xk3EMseQem", "QKCnfRHGyj52Jzuvx6oYcMq0J41jitPWk1pVNZAZ1pd3f");
 
@@ -60,15 +75,43 @@ public class Fire {
 // Attempts to establish a connection.
         hosebirdClient.connect();
         NLP.init();
+        Analysis abc = new Analysis();
+        abc.init();
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase db = mongoClient.getDatabase("test");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance();
 
         while (!hosebirdClient.isDone()) {
-            String msg = msgQueue.take();
-            boolean indexStart = msg.contains("\"text\":\"");
-            boolean indexEnd = msg.contains("\"source\":\"");
-            if (indexStart && indexEnd){
+            try{
+                String msg = msgQueue.take();
+                int indexStart = msg.indexOf("\"text\":\"");
+                int indexEnd = msg.indexOf("\"source\":\"");
+                if (indexStart > 0 && indexEnd>0){
+                    String trim = msg.substring(indexStart+8,indexEnd);
+                    if(trim.contains("http")){
+                        trim=trim.substring(0,trim.indexOf("http"));
+                    }
 
-                System.out.println(msg.substring(msg.indexOf("\"text\":\"")+8,msg.indexOf("\"source\":\"")-2));
-                System.out.println("Sentiment : " + NLP.findSentiment(msg.substring(msg.indexOf("\"text\":\"")+8,msg.indexOf("\"source\":\"")-2)));
+                    System.out.println(trim);
+                    int stanfordGrade =NLP.findSentiment(trim);
+                    System.out.println("Sentiment : " + stanfordGrade);
+                    String wlvOutput = abc.rate(trim);
+                    System.out.println(wlvOutput);
+                    int wlvGrade = Integer.parseInt(wlvOutput.substring(wlvOutput.lastIndexOf("result =")+8,wlvOutput.lastIndexOf("as")-1).replaceAll(" ",""));
+                    db.getCollection("twitter").insertOne(
+                            new Document().append("text", trim)
+                                    .append("time", format.format(cal.getTime()))
+                                    .append("sentiment", asList(
+                                            new Document().append("type","stanford")
+                                                    .append("grade",stanfordGrade),
+                                            new Document().append("type","wlv")
+                                                    .append("grade",wlvGrade)
+                                    ))
+                    );
+                }
+            }catch (Exception e){
+                System.out.println(e);
             }
 
             //profit();

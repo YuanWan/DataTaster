@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="datataster" default="all">
+  
+  
+  <property file="datataster.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.tox/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value=""/>
+  <property name="project.jdk.bin" value=""/>
+  <property name="project.jdk.classpath" value=""/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.maven:_cglib:cglib-nodep:2.1_3.classpath">
+    <pathelement location="${path.variable.maven_repository}/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.google.code.findbugs:jsr305:1.3.9.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.google.code.gson:gson:2.3.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.google.guava:guava:14.0.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/google/guava/guava/14.0.1/guava-14.0.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.googlecode.efficient-java-matrix-library:ejml:0.23.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/googlecode/efficient-java-matrix-library/ejml/0.23/ejml-0.23.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.io7m.xom:xom:1.2.10.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/io7m/xom/xom/1.2.10/xom-1.2.10.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.twitter:hbc-core:2.2.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/twitter/hbc-core/2.2.0/hbc-core-2.2.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.twitter:joauth:6.0.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/twitter/joauth/6.0.2/joauth-6.0.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-codec:commons-codec:1.6.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-collections:commons-collections:3.2.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-io:commons-io:2.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-logging:commons-logging:1.1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_de.jollyday:jollyday:0.4.7.classpath">
+    <pathelement location="${path.variable.maven_repository}/de/jollyday/jollyday/0.4.7/jollyday-0.4.7.jar"/>
+  </path>
+  
+  <path id="library.maven:_edu.stanford.nlp:stanford-corenlp:3.5.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/edu/stanford/nlp/stanford-corenlp/3.5.2/stanford-corenlp-3.5.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_edu.stanford.nlp:stanford-corenlp:models:3.5.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/edu/stanford/nlp/stanford-corenlp/3.5.2/stanford-corenlp-3.5.2-models.jar"/>
+  </path>
+  
+  <path id="library.maven:_io.netty:netty:3.5.2.final.classpath">
+    <pathelement location="${path.variable.maven_repository}/io/netty/netty/3.5.2.Final/netty-3.5.2.Final.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.json:javax.json-api:1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/json/javax.json-api/1.0/javax.json-api-1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.xml.bind:jaxb-api:2.2.7.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/xml/bind/jaxb-api/2.2.7/jaxb-api-2.2.7.jar"/>
+  </path>
+  
+  <path id="library.maven:_joda-time:joda-time:2.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/joda-time/joda-time/2.1/joda-time-2.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.java.dev.jna:jna-platform:4.1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/java/dev/jna/jna-platform/4.1.0/jna-platform-4.1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.java.dev.jna:jna:4.1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/java/dev/jna/jna/4.1.0/jna-4.1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sourceforge.cssparser:cssparser:0.9.16.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sourceforge/cssparser/cssparser/0.9.16/cssparser-0.9.16.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sourceforge.htmlunit:htmlunit-core-js:2.17.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sourceforge/htmlunit/htmlunit-core-js/2.17/htmlunit-core-js-2.17.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sourceforge.htmlunit:htmlunit:2.17.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sourceforge/htmlunit/htmlunit/2.17/htmlunit-2.17.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sourceforge.nekohtml:nekohtml:1.9.22.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sourceforge/nekohtml/nekohtml/1.9.22/nekohtml-1.9.22.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.commons:commons-exec:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.commons:commons-lang3:3.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.httpcomponents:httpclient:4.3.5.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/httpcomponents/httpclient/4.3.5/httpclient-4.3.5.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.httpcomponents:httpmime:4.4.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.4.1/httpmime-4.4.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.websocket:websocket-api:9.2.11.v20150529.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/websocket/websocket-api/9.2.11.v20150529/websocket-api-9.2.11.v20150529.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.websocket:websocket-client:9.2.11.v20150529.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/websocket/websocket-client/9.2.11.v20150529/websocket-client-9.2.11.v20150529.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.websocket:websocket-common:9.2.11.v20150529.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/websocket/websocket-common/9.2.11.v20150529/websocket-common-9.2.11.v20150529.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-io:9.2.11.v20150529.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-io/9.2.11.v20150529/jetty-io-9.2.11.v20150529.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-util:9.2.11.v20150529.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-util/9.2.11.v20150529/jetty-util-9.2.11.v20150529.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.json:json:20141113.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/json/json/20141113/json-20141113.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.mongodb:bson:3.0.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/mongodb/bson/3.0.4/bson-3.0.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.mongodb:mongodb-driver-core:3.0.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/mongodb/mongodb-driver-core/3.0.4/mongodb-driver-core-3.0.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.mongodb:mongodb-driver:3.0.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/mongodb/mongodb-driver/3.0.4/mongodb-driver-3.0.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.python:jython:2.5.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/python/jython/2.5.0/jython-2.5.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-api:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-api/2.47.1/selenium-api-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-chrome-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-chrome-driver/2.47.1/selenium-chrome-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-edge-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-edge-driver/2.47.1/selenium-edge-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-firefox-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-firefox-driver/2.47.1/selenium-firefox-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-htmlunit-driver/2.47.1/selenium-htmlunit-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-ie-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-ie-driver/2.47.1/selenium-ie-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-java:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-java/2.47.1/selenium-java-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-leg-rc:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-leg-rc/2.47.1/selenium-leg-rc-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-remote-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-remote-driver/2.47.1/selenium-remote-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-safari-driver:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-safari-driver/2.47.1/selenium-safari-driver-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.seleniumhq.selenium:selenium-support:2.47.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/seleniumhq/selenium/selenium-support/2.47.1/selenium-support-2.47.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.slf4j:slf4j-api:1.6.6.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/slf4j/slf4j-api/1.6.6/slf4j-api-1.6.6.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.twitter4j:twitter4j-core:4.0.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/twitter4j/twitter4j-core/4.0.3/twitter4j-core-4.0.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.w3c.css:sac:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/w3c/css/sac/1.3/sac-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.webbitserver:webbit:0.4.14.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/webbitserver/webbit/0.4.14/webbit-0.4.14.jar"/>
+  </path>
+  
+  <path id="library.maven:_xalan:xalan:2.7.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/xalan/xalan/2.7.0/xalan-2.7.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_xerces:xercesimpl:2.8.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/xerces/xercesImpl/2.8.0/xercesImpl-2.8.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_xml-apis:xml-apis:1.3.03.classpath">
+    <pathelement location="${path.variable.maven_repository}/xml-apis/xml-apis/1.3.03/xml-apis-1.3.03.jar"/>
+  </path>
+  
+  <path id="library.sentistrengthcom.classpath">
+    <pathelement location="${basedir}/lib/SentiStrengthCom.jar"/>
+  </path>
+  
+  
+  <!-- Global Libraries -->
+  
+  <path id="library.python_3.4.3_(c:\python34\python.exe)_interpreter_library.classpath">
+    <pathelement location="C:/Python34"/>
+    <pathelement location="C:/Python34/DLLs"/>
+    <pathelement location="C:/Python34/Lib"/>
+    <pathelement location="C:/Python34/Lib/site-packages"/>
+    <pathelement location="C:/Users/Yuan/.IntelliJIdea14/config/plugins/python/helpers/python-skeletons"/>
+    <pathelement location="C:/Users/Yuan/.IntelliJIdea14/system/python_stubs/-1442825926"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/module_datataster.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.datataster" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.datataster" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>

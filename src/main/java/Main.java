@@ -1,11 +1,12 @@
 import hbc.Fire;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-import nlp.NLP;
+
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws TwitterException, InterruptedException, JSONException {
+    public static void main(String[] args) throws TwitterException, InterruptedException, JSONException, IOException {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey("6ZKmg5xXhRH2IMIpNU1bR93pb")
@@ -27,7 +28,13 @@ public class Main {
 //        }
 
         //live listening
+
+
         Fire.steam();
+
+        //Stream.Stream();
+
+
 
     }
 }

@@ -31,19 +31,18 @@ class VoteClassifier(ClassifierI):
         for c in self._classifiers:
             v = c.classify(features)
             votes.append(v)
-
         choice_votes = votes.count(mode(votes))
         conf = choice_votes / len(votes)
         return conf
 
 
-documents_f = open("pickled_algos/documents.pickle", "rb")
-documents = pickle.load(documents_f)
-documents_f.close()
-
-
-
-
+# documents_f = open("pickled_algos/documents.pickle", "rb")
+# documents = pickle.load(documents_f)
+# documents_f.close()
+#
+#
+#
+#
 word_features5k_f = open("pickled_algos/word_features5k.pickle", "rb")
 word_features = pickle.load(word_features5k_f)
 word_features5k_f.close()
@@ -59,15 +58,15 @@ def find_features(document):
 
 
 
-featuresets_f = open("pickled_algos/featuresets.pickle", "rb")
-featuresets = pickle.load(featuresets_f)
-featuresets_f.close()
-
-random.shuffle(featuresets)
-print(len(featuresets))
-
-testing_set = featuresets[10000:]
-training_set = featuresets[:10000]
+# featuresets_f = open("pickled_algos/featuresets.pickle", "rb")
+# featuresets = pickle.load(featuresets_f)
+# featuresets_f.close()
+#
+# random.shuffle(featuresets)
+# print(len(featuresets))
+#
+# testing_set = featuresets[10000:]
+# training_set = featuresets[:10000]
 
 
 
@@ -109,7 +108,9 @@ voted_classifier = VoteClassifier(
     LinearSVC_classifier,
     MNB_classifier,
     BernoulliNB_classifier,
-    LogisticRegression_classifier)
+    LogisticRegression_classifier,
+    SGDC_classifier
+)
 
 
 
