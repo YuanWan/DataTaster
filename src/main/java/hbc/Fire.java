@@ -40,7 +40,7 @@ import org.python.util.PythonInterpreter;
  */
 public class Fire {
 
-    static List<String> terms = Lists.newArrayList("stock");
+    static List<String> terms = Lists.newArrayList("stock","market","finance");
 
     public static void steam() throws InterruptedException, JSONException {
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
