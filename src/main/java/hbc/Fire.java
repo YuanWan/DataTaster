@@ -9,6 +9,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.common.collect.Lists;
 
+import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.*;
 import com.twitter.hbc.core.endpoint.Location;
@@ -22,9 +24,11 @@ import org.json.*;
 import sentiment.Analysis;
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.DBCollection;
+import com.mongodb.util.JSON;
 import org.bson.Document;
+import com.mongodb.DBObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +44,7 @@ import org.python.util.PythonInterpreter;
  */
 public class Fire {
 
-    static List<String> terms = Lists.newArrayList("stock","market","finance");
+    static List<String> terms = Lists.newArrayList("Harvard");
 
     public static void steam() throws InterruptedException, JSONException {
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
@@ -86,6 +90,9 @@ public class Fire {
             try{
                 String msg = msgQueue.take();
                 int indexStart = msg.indexOf("\"text\":\"");
+                //JSONObject obj = new JSONObject(msg);
+                BasicDBObject dbObject = (BasicDBObject) JSON
+                        .parse(msg);
                 int indexEnd = msg.indexOf("\"source\":\"");
                 if (indexStart > 0 && indexEnd>0){
                     String trim = msg.substring(indexStart+8,indexEnd);
@@ -99,16 +106,18 @@ public class Fire {
                     String wlvOutput = abc.rate(trim);
                     System.out.println(wlvOutput);
                     int wlvGrade = Integer.parseInt(wlvOutput.substring(wlvOutput.lastIndexOf("result =")+8,wlvOutput.lastIndexOf("as")-1).replaceAll(" ",""));
-                    db.getCollection("twitter").insertOne(
-                            new Document().append("text", trim)
-                                    .append("time", format.format(cal.getTime()))
-                                    .append("sentiment", asList(
-                                            new Document().append("type","stanford")
-                                                    .append("grade",stanfordGrade),
-                                            new Document().append("type","wlv")
-                                                    .append("grade",wlvGrade)
-                                    ))
-                    );
+                    Document scores= new Document()
+                            .append("time", format.format(cal.getTime()))
+                            .append("sentiment", asList(
+                                    new Document().append("type","stanford")
+                                            .append("grade",stanfordGrade),
+                                    new Document().append("type","wlv")
+                                            .append("grade",wlvGrade)
+                            ));
+
+                    dbObject.putAll(scores);
+                    MongoCollection<BasicDBObject> coll = db.getCollection("twitter", BasicDBObject.class);
+                    coll.insertOne(dbObject);
                 }
             }catch (Exception e){
                 System.out.println(e);

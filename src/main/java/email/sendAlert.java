@@ -5,3 +5,4 @@ package email;
  */
 public class sendAlert {
 }
+

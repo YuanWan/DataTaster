@@ -10,9 +10,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
 
-//     Fire.steam();
-
-        Feed.manager();
+     Fire.steam();
+        //Feed.manager();
 
 
 
